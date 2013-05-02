@@ -88,23 +88,7 @@ $(function(){
                     </div>
                      <div id="sentmsg" style="color:#4E7B11; font-size: small; font-weight: bolder;"></div>
                 </form>
-<?php  
-$site_host = $_SERVER["HTTP_HOST"];
 
-if($site_host == "64.27.63.10"){
-include_once('/home/vinixbe/public_html/fascia/new/include/includeclass.php');
-  }
-elseif($site_host == "174.122.78.159"){
-include_once('/home/vinixbe/public_html/fascia/include/includeclass.php');
-	}
-elseif($site_host == "192.168.1.207"){
-$path = $_SERVER['DOCUMENT_ROOT']; include_once("$path/fascia/include/includeclass.php");
-	}else {
-		//include_once('/home/vinixbe/public_html/fascia/new/include/includeclass.php');
-$path = $_SERVER['DOCUMENT_ROOT']; include_once("$path/include/includeclass.php");
-}
-
-?>
 <?php 
 
 if(!empty($_POST))
@@ -137,7 +121,7 @@ $headers .= "Content-type:text/html; charset=utf-8\n";
 $headers .= "From:$Naam<$email>\n";
 $bcc ="e";
 
-//$bcc ="dharmesh.developer@gmail.com"; 
+//$bcc ="fr@gmail.com"; 
 $headers .= "Bcc: ".$bcc."\n";
 $headers .= "X-Priority: 3\n";
 $headers .= "X-MSMail-Priority: Normal\n";
@@ -153,8 +137,8 @@ $msg .= '<tr><td align=left>Dear  '.$admin_name.',</td></tr>';
 $msg .= '<tr><td align=left></td></tr>';
 $msg .= '<tr><td align=left></td></tr>';
 $msg .= '<tr><td align=left></td></tr>';
-$msg .= '<tr><td align=left>A visitor has filled in the contact form on Fascia.be. Here are his/her details.
-</td></tr>';
+
+
 $msg .= '<tr><td align=left></td></tr>';
 $msg .= '<tr><td align=left></td></tr>';
 $msg .= '<tr><td align=left></td></tr>';
@@ -171,9 +155,7 @@ $msg .= '<tr><td align=left></td></tr>';
 $msg .= '<tr><td align=left></td></tr>';
 																				
 $msg .= '<tr><td align=left>Best regards,</td></tr>';
-$msg .= '<tr><td align=left><b>Vinix</b></td></tr>';
-$msg .= '<tr><td align=left>The creative marketing and communication agency</td></tr>';
-$msg .= '<tr><td align=left>http://www.vinixconsulting.com</td></tr>';
+
 $msg .= '</table>';
 
 								
