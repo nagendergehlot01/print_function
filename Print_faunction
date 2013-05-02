@@ -1,0 +1,201 @@
+function pr($arr,$end=0)
+{
+echo"<pre>";
+  print_r($arr);
+echo"</pre><hr>";
+if($end)
+exit;
+}
+
+<script type="text/javascript" >
+        $(function(){
+            // binds form submission and fields to the validation engine
+            $("#frmContact").validationEngine();
+        });
+        
+        $(function(){
+    $('#frmContact').submit(function(e){
+         e.preventDefault();
+     
+         //if invalid do nothing
+         if(!$("#frmContact").validationEngine('validate')){
+         return false;
+         }
+      var dataString = $('#frmContact').serialize();
+      $.ajax({
+        type: "POST",
+        url: JS_ROOT_WWW+"callAjax.php",
+        data: dataString+"&method=savecontact",
+        
+        success: function (data) {
+
+          document.getElementById("frmContact").reset();
+          $('#sentmsg').html("Your Message Sent successfully");
+          //.fadeIn(1200);
+          }
+      });
+      return false;
+    })
+});
+    </script>
+<script>
+ jQuery(document).ready(function(){
+ jQuery("#validate_form").validationEngine();
+ });
+ 
+$(function(){
+    $('#validate_form').submit(function(e){
+         e.preventDefault();
+     
+         //if invalid do nothing
+         if(!$("#validate_form").validationEngine('validate')){
+         return false;
+         }
+      var dataString = $('#validate_form').serialize();
+      $.ajax({
+        type: "POST",
+        url: "contact-form",
+        data: dataString,
+        success: function (data) {
+          //$('#newsletter-box').html('<div id="message"></div>');
+          //$('#message').html('<img width="18px" height="18px" src="/static/img/smtick.png" /><h5>Thank You !</h5>')
+          //.append('<p>We have recieved your request. Please Check your mail for activation instructions. You will start recieving our newsletter once you have verified t his email address.</p>')
+          //.hide()
+          document.getElementById("validate_form").reset();
+          $('#sentmsg').html(data);
+          //.fadeIn(1200);
+          }
+      });
+      return false;
+    })
+});
+</script>
+
+ <form name="frmContact" id="frmContact" class="frmValidation" action="<?= getFrontURL('contactus'); ?>" method="post"  >
+                    <div class="form_input contact_field"> <span>
+                            <input type="text" id="txtName" name="txtName" value="" placeholder="Your Name" >
+                        </span> </div>
+                    <div class="form_input contact_field"> <span>
+                            <input type="text" id="txtEmail" name="txtEmail" value="" placeholder="Email Address" >
+                        </span> </div>
+                    <div class="form_input contact_field">
+                        <textarea id="txtMessage" name="txtMessage" placeholder="Message or Comments" ></textarea>
+                    </div>
+                    <div class="input_button">
+                        <span>
+                            <input type="submit" value="Send" id="send" />
+                        </span>
+                    </div>
+                     <div id="sentmsg" style="color:#4E7B11; font-size: small; font-weight: bolder;"></div>
+                </form>
+<?php  
+$site_host = $_SERVER["HTTP_HOST"];
+
+if($site_host == "64.27.63.10"){
+include_once('/home/vinixbe/public_html/fascia/new/include/includeclass.php');
+  }
+elseif($site_host == "174.122.78.159"){
+include_once('/home/vinixbe/public_html/fascia/include/includeclass.php');
+	}
+elseif($site_host == "192.168.1.207"){
+$path = $_SERVER['DOCUMENT_ROOT']; include_once("$path/fascia/include/includeclass.php");
+	}else {
+		//include_once('/home/vinixbe/public_html/fascia/new/include/includeclass.php');
+$path = $_SERVER['DOCUMENT_ROOT']; include_once("$path/include/includeclass.php");
+}
+
+?>
+<?php 
+
+if(!empty($_POST))
+{
+$Onderwerp = $_POST['Onderwerp'];
+$Naam = $_POST['Naam'];
+$Telefoon = $_POST['Telefoon'];
+$email = $_POST['email'];
+$Vraag = $_POST['Vraag'];
+$Contacteer	= $_POST['Contacteer']; 
+
+/*$Onderwerp = 'test';
+$Naam = 'test';
+$Telefoon = 'test';
+$email = 'test@test.com';
+$Vraag = 'test';
+$Contacteer	= 'test'; 
+*/	 
+	$select=mysql_query("select * from admin where l='H'");
+$row=mysql_fetch_array($select);
+$admin_email = $row['adm_email'];		
+$admin_name = $row['adm_name'];		 
+$to1 = $admin_email; 	 
+
+//$subject = $Onderwerp;
+$subject ="Fascia.be contactformulier";
+$headers = "MIME-Version: 1.0\r\n";
+$headers .= "Content-type:text/html; charset=utf-8\n";
+//$headers .= "Content-Transfer-Encoding: 8bit\n";
+$headers .= "From:$Naam<$email>\n";
+$bcc ="e";
+
+//$bcc ="dharmesh.developer@gmail.com"; 
+$headers .= "Bcc: ".$bcc."\n";
+$headers .= "X-Priority: 3\n";
+$headers .= "X-MSMail-Priority: Normal\n";
+$headers .= "Importance: 3\n";
+//$headers .= "X-Mailer: PHP/" . phpversion()."\n";
+
+$msg .= '<table border=0>';
+
+$msg .= "<tr><td align=left><a href='http://fascia.be/nl/'><img width='200' height='40' src='logo.png' alt='' title=''  /></a></td></tr>";
+$msg .= '<tr><td align=left></td></tr>';
+$msg .= '<tr><td align=left></td></tr>';
+$msg .= '<tr><td align=left>Dear  '.$admin_name.',</td></tr>';
+$msg .= '<tr><td align=left></td></tr>';
+$msg .= '<tr><td align=left></td></tr>';
+$msg .= '<tr><td align=left></td></tr>';
+$msg .= '<tr><td align=left>A visitor has filled in the contact form on Fascia.be. Here are his/her details.
+</td></tr>';
+$msg .= '<tr><td align=left></td></tr>';
+$msg .= '<tr><td align=left></td></tr>';
+$msg .= '<tr><td align=left></td></tr>';
+$msg .= '<tr><td align=left><b>Name</b>	 :  '.$Naam.' </td></tr>';
+$msg .= '<tr><td align=left><b>Phone</b>	 :  '.$Telefoon.' </td></tr>';
+$msg .= '<tr><td align=left><b>E-mail</b>   :  '.$email.' </td></tr>';
+$msg .= '<tr><td align=left></td></tr>';
+$msg .= '<tr><td align=left></td></tr>';
+$msg .= '<tr><td align=left></td></tr>';
+$msg .= '<tr><td align=left><b>Topic</b>   :  '.$Onderwerp.' </td></tr>';
+$msg .= '<tr><td align=left><b>Question</b> : '.nl2br($Vraag).'</td></tr>';
+$msg .= '<tr><td align=left><b>Contact this person</b> : '.$Contacteer.'</td></tr>';
+$msg .= '<tr><td align=left></td></tr>';
+$msg .= '<tr><td align=left></td></tr>';
+																				
+$msg .= '<tr><td align=left>Best regards,</td></tr>';
+$msg .= '<tr><td align=left><b>Vinix</b></td></tr>';
+$msg .= '<tr><td align=left>The creative marketing and communication agency</td></tr>';
+$msg .= '<tr><td align=left>http://www.vinixconsulting.com</td></tr>';
+$msg .= '</table>';
+
+								
+$send = mail($to1,$subject,$msg,$headers);
+if($send) {
+	echo 'Bedankt voor uw bericht. Wij bekijken het en nemen contact met u op. ';
+unset($add_values);
+$SECTION_FIELD_PREFIX='contact_';
+$add_values[$SECTION_FIELD_PREFIX.'subject'] = $Onderwerp;
+$add_values[$SECTION_FIELD_PREFIX.'first_name'] = $Naam;
+$add_values[$SECTION_FIELD_PREFIX.'phn_no'] = $Telefoon;
+$add_values[$SECTION_FIELD_PREFIX.'email'] = $email;
+$add_values[$SECTION_FIELD_PREFIX.'question'] = $Vraag;
+$add_values[$SECTION_FIELD_PREFIX.'contact_me'] = $Contacteer;
+$add_values[$SECTION_FIELD_PREFIX.'created_date'] = date('Y-m-d H:i:s');
+
+$SECTION_TABLE='tbl_contact';		
+$GPDetail_result = $db->insertData($SECTION_TABLE,$add_values);
+
+}else {
+	echo 'Request is not submit try again';
+}
+}
+echo " ";
+?>
