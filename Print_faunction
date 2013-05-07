@@ -161,20 +161,10 @@ $msg .= '</table>';
 								
 $send = mail($to1,$subject,$msg,$headers);
 if($send) {
-	echo 'Bedankt voor uw bericht. Wij bekijken het en nemen contact met u op. ';
+	echo 'check ';
 unset($add_values);
-$SECTION_FIELD_PREFIX='contact_';
-$add_values[$SECTION_FIELD_PREFIX.'subject'] = $Onderwerp;
-$add_values[$SECTION_FIELD_PREFIX.'first_name'] = $Naam;
-$add_values[$SECTION_FIELD_PREFIX.'phn_no'] = $Telefoon;
-$add_values[$SECTION_FIELD_PREFIX.'email'] = $email;
-$add_values[$SECTION_FIELD_PREFIX.'question'] = $Vraag;
-$add_values[$SECTION_FIELD_PREFIX.'contact_me'] = $Contacteer;
-$add_values[$SECTION_FIELD_PREFIX.'created_date'] = date('Y-m-d H:i:s');
 
-$SECTION_TABLE='tbl_contact';		
-$GPDetail_result = $db->insertData($SECTION_TABLE,$add_values);
-
+insert query
 }else {
 	echo 'Request is not submit try again';
 }
